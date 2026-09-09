@@ -163,44 +163,93 @@
       gsap.ticker.lagSmoothing(0);
     }
 
-    /* ---- S01 · HERO intro + pinned deconstruction ---- */
-    const layers = $$('.burger__layer'), tags = $$('.burger__tag');
+    /* ---- S01 · HERO — pinned product campaign ----
+       Timeline is scrubbed to scroll: every value maps to scroll position (forwards and back).
+       Phases: focus (0–.25) → depth (.25–.55) → statement (.5–.85) → hand-off (.85–1) */
+    const layers = $$('.burger__layer');
+    const seeds = $('#burgerSeeds'), shadow = $('#burgerShadow'), floatEl = $('#burgerFloat');
+    const stmt = $$('.hero__stmt-w i');
+    const mobile = () => innerWidth < 1024;
+    const vw = v => innerWidth * v / 100, vh = v => innerHeight * v / 100;
+
+    // Intro (load only): quiet, no bounce
     const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
     intro.to('.hero__w', { yPercent: 0, duration: 1.2, stagger: .09 })
-      .to('#burger', { yPercent: 0, scale: 1, opacity: 1, duration: 1.5 }, .35)
+      .to('#burger', { yPercent: 0, scale: 1, opacity: 1, duration: 1.6 }, .3)
+      .fromTo(layers, { yPercent: i => [-10, -4, 3, 8][i] }, { yPercent: 0, duration: 1.4, stagger: .04 }, .38)
+      .fromTo(shadow, { opacity: 0, scaleX: .5 }, { opacity: 1, scaleX: 1, duration: 1.4 }, .5)
+      .fromTo(seeds, { opacity: 0, y: -40 }, { opacity: .9, y: 0, duration: 1.6, ease: 'power3.out' }, .55)
       .to('#heroFront', { yPercent: 0, opacity: 1, duration: 1.2 }, .55)
       .to('#heroCopy', { y: 0, opacity: 1, duration: 1 }, .9)
       .to('#heroHint', { opacity: 1, duration: .8 }, 1.2);
 
-    // Scrubbed scene: title disperses → burger opens → labels → closes → product tag
-    const spread = () => Math.min(innerWidth, 1400) * (innerWidth < 1024 ? .5 : .55);
-    const explode = innerWidth < 600 ? [-0.17, -0.06, 0.06, 0.17] : [-0.22, -0.075, 0.075, 0.22];   // fraction of burger height
+    // A very slow breathe while idle; paused the moment the scroll sequence starts
+    const idle = gsap.to(floatEl, { y: -8, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
+    intro.add(() => idle.play(), 1.3);
+
+    // Pointer depth (desktop): near layers move more than far ones
+    if (fine) {
+      const qx = layers.map(l => gsap.quickTo(l, 'x', { duration: .9, ease: 'power3' }));
+      const qs = gsap.quickTo(seeds, 'x', { duration: 1.3, ease: 'power3' });
+      $('.hero__stage').addEventListener('pointermove', e => {
+        const nx = e.clientX / innerWidth - .5;
+        qx.forEach((q, i) => q(nx * [16, 8, -4, -12][i]));
+        qs(nx * -22);
+      });
+    }
+
     const heroTL = gsap.timeline({
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=380%', pin: '.hero__stage', scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true },
+      scrollTrigger: {
+        trigger: '.hero', start: 'top top', end: () => '+=' + (mobile() ? 230 : 320) + '%',
+        pin: '.hero__stage', scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
+        onUpdate: s => {
+          if (s.progress > .01) { if (idle.isActive()) { idle.pause(); gsap.to(floatEl, { y: 0, duration: .6, overwrite: 'auto' }); } }
+          else if (!idle.isActive() && intro.progress() === 1) idle.play();
+        },
+      },
       defaults: { ease: 'none' },
     });
+
     heroTL
-      // phase 1 (0–.22): typography moves at different speeds, copy leaves, burger settles centre
-      .to('.hero__l--1 .hero__w', { yPercent: -140, opacity: 0, duration: .22 }, 0)
-      .to('.hero__l--2 .hero__w', { x: () => -spread(), opacity: .12, duration: .22 }, 0)
-      .to('.hero__l--3 .hero__w', { x: () => spread(), opacity: .12, duration: .22 }, 0)
-      .to('#heroFront', { x: () => spread(), opacity: 0, duration: .16 }, 0)
-      .to('#heroCopy', { y: 40, opacity: 0, duration: .12 }, 0)
-      .to('#heroHint', { opacity: 0, duration: .08 }, 0)
-      .to('#burger', { yPercent: 0, scale: () => (innerWidth < 1024 ? 1 : 1.18), duration: .22 }, 0)
-      .to('#heroMark', { scale: 1.35, opacity: .6, duration: .8 }, 0)
-      // phase 2 (.22–.5): explode
-      .to(layers, { yPercent: i => explode[i] * 100, rotation: i => [-3, 2, -2, 3][i], duration: .28, stagger: { each: .02, from: 'center' } }, .22)
-      .to(tags, { opacity: 1, x: 0, duration: .08, stagger: .05 }, .34)
-      .from(tags, { x: i => (i % 2 ? 24 : -24), duration: .1, stagger: .05, immediateRender: false }, .34)
-      // hold (.5–.62)
-      // phase 3 (.62–.84): reassemble, shrink and drift up-left
-      .to(tags, { opacity: 0, duration: .06, stagger: .02 }, .62)
-      .to(layers, { yPercent: 0, rotation: 0, duration: .22, stagger: { each: .02, from: 'edges' } }, .64)
-      .to('#burger', { scale: () => (innerWidth < 1024 ? .85 : .95), xPercent: () => (innerWidth < 1024 ? 0 : -18), yPercent: () => (innerWidth < 1024 ? -14 : -6), duration: .22 }, .64)
-      // phase 4 (.84–1): product card
-      .fromTo('#heroProduct', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .12, onStart: () => $('#heroProduct').classList.add('is-live'), onReverseComplete: () => $('#heroProduct').classList.remove('is-live') }, .84)
-      .to('.hero__l--3 .hero__w', { opacity: .4, x: () => spread() * .9, duration: .16 }, .84);
+      /* Phase 1 · focus: burger comes forward to the focal point, UI copy clears */
+      .to('#heroCopy', { y: 36, opacity: 0, duration: .1 }, 0)
+      .to('#heroHint', { opacity: 0, duration: .06 }, 0)
+      .to('#burger', { y: () => (mobile() ? -vh(1) : -vh(13)), scale: () => (mobile() ? 1.22 : 1.24), rotation: -2, duration: .28, ease: 'power1.inOut' }, 0)
+      .to(shadow, { opacity: .35, scaleX: 1.2, y: 10, duration: .28 }, 0)
+      .to(seeds, { y: () => vh(6), opacity: .5, duration: .28 }, 0)
+      .to('#heroGlow', { scale: 1.25, opacity: 1.2, duration: .5 }, 0)
+      // typography at different speeds: THE lifts, ROLLING sinks slowly behind the burger, ROOSTER (back) drops
+      .to('.hero__l--1 .hero__w', { y: () => -vh(18), opacity: 0, duration: .32 }, 0)
+      .to('.hero__l--2 .hero__w', { y: () => -vh(4), duration: .5 }, 0)
+      .to('.hero__l--3 .hero__w', { y: () => vh(3), duration: .5 }, 0)
+      // the front ROOSTER copy recedes: its clip rises so the burger emerges through the word
+      .to('#heroFront', { y: () => vh(3), clipPath: 'inset(100% 0 -20% 0)', duration: .3 }, .05)
+      .to('#heroMark', { y: () => -vh(10), scale: 1.12, duration: 1 }, 0)
+
+      /* Phase 2 · depth: layers separate a touch, type drifts outward and dims */
+      .to(layers, { yPercent: i => [-5, -1.5, 1.5, 5][i], scale: i => [1.03, 1.01, .995, .975][i], duration: .25, stagger: { each: .015, from: 'center' } }, .22)
+      .to('#burger', { rotation: 1, duration: .3 }, .28)
+      .to('.hero__l--2 .hero__w', { x: () => (mobile() ? -vw(10) : -vw(14)), opacity: .1, duration: .3 }, .3)
+      .to('.hero__l--3 .hero__w', { x: () => (mobile() ? vw(10) : vw(14)), opacity: .1, duration: .3 }, .3)
+      .to(seeds, { opacity: 0, y: () => vh(14), duration: .2 }, .3)
+
+      /* Phase 3 · statement: three words wipe in progressively; old title fully out */
+      .to('.hero__l--2 .hero__w, .hero__l--3 .hero__w', { opacity: 0, duration: .12 }, .5)
+      .to(stmt[0], { yPercent: -105, duration: .1 }, .5)
+      .to(stmt[1], { yPercent: -105, duration: .1 }, .58)
+      .to(stmt[2], { yPercent: -105, duration: .1 }, .66)
+      .to('#burger', { y: () => (mobile() ? vh(1) : -vh(11)), rotation: -1, duration: .25 }, .5)
+
+      /* Phase 4 · hand-off: layers close, burger shrinks toward the top-right and leaves through the next section */
+      .to(layers, { yPercent: 0, scale: 1, duration: .15 }, .82)
+      .to(stmt, { yPercent: -215, duration: .12, stagger: .03 }, .84)
+      .to('#burger', { x: () => (mobile() ? vw(20) : vw(22)), y: () => (mobile() ? -vh(30) : -vh(20)), scale: () => (mobile() ? .55 : .7), rotation: 7, duration: .18, ease: 'power1.inOut' }, .84)
+      .to(shadow, { opacity: 0, duration: .1 }, .84)
+      .to('#heroGlow', { opacity: .4, y: () => vh(20), duration: .18 }, .84)
+      .fromTo('#heroProduct', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .1, onStart: () => $('#heroProduct').classList.add('is-live'), onReverseComplete: () => $('#heroProduct').classList.remove('is-live') }, .86);
+
+    // The manifesto inherits the product: it rises into the same corner and parallaxes slowly through the type
+    gsap.fromTo('#manifestoBurger', { y: () => vh(-4), rotation: 8 }, { y: () => vh(28), rotation: -4, ease: 'none', scrollTrigger: { trigger: '.manifesto', start: 'top bottom', end: 'bottom top', scrub: true } });
 
     /* ---- S03 · MANIFESTO kinetic rows + word wash ---- */
     $$('.kinetic__row').forEach(row => {
@@ -222,6 +271,7 @@
     gsap.fromTo('#campaignPrice', { yPercent: 25, scale: .9 }, { yPercent: -15, scale: 1, ease: 'none', scrollTrigger: camp });
     gsap.fromTo('#campChicken', { yPercent: 40, rotation: -16 }, { yPercent: -30, rotation: 8, ease: 'none', scrollTrigger: camp });
     gsap.fromTo('#campBurger', { yPercent: 25, rotation: 6 }, { yPercent: -20, rotation: -6, ease: 'none', scrollTrigger: camp });
+    gsap.to('#campBurger', { y: '-=16', duration: 2.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     gsap.from('.campaign__copy > *', { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '.campaign__copy', start: 'top 85%', once: true } });
 
     /* ---- S05b · deals rail: horizontal pin on desktop ---- */
@@ -274,6 +324,8 @@
     if (!hasGSAP || reduce) return;
     gsap.set('.hero__w', { yPercent: 110 });
     gsap.set('#burger', { yPercent: 40, scale: .8, opacity: 0 });
+    gsap.set(['#burgerSeeds', '#burgerShadow'], { opacity: 0 });
+    gsap.set('#heroFront', { clipPath: 'inset(40% 0 -20% 0)' });
     gsap.set('#heroFront', { yPercent: 110, opacity: 0 });
     gsap.set('#heroCopy', { y: 30, opacity: 0 });
     gsap.set('#heroHint', { opacity: 0 });

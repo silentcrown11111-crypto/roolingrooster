@@ -9,16 +9,16 @@
   <meta property="og:type" content="restaurant">
   <meta property="og:title" content="The Rolling Rooster — Fast Food & Roof Top Dine Inn">
   <meta property="og:description" content="Zinger burgers, crispy wings, chicken pizza, shawarma and Karachi biryani. Delivery available. Inayat Market, I-11/2, Islamabad.">
-  <meta property="og:image" content="assets/products/zinger-burger.webp">
+  <meta property="og:image" content="assets/products/tower-burger.webp">
   <meta property="og:locale" content="en_PK">
   <link rel="icon" href="assets/brand/rooster-logo.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/brand/rooster-logo.png">
   <link rel="preload" href="assets/fonts/big-shoulders-display-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/products/zinger-bun-top.webp" as="image">
-  <link rel="preload" href="assets/products/zinger-greens.webp" as="image">
-  <link rel="preload" href="assets/products/zinger-fillet.webp" as="image">
-  <link rel="preload" href="assets/products/zinger-bun-bottom.webp" as="image">
+  <link rel="preload" href="assets/products/tower-bun-top.webp" as="image">
+  <link rel="preload" href="assets/products/tower-patty-1.webp" as="image">
+  <link rel="preload" href="assets/products/tower-patty-2.webp" as="image">
+  <link rel="preload" href="assets/products/tower-base.webp" as="image">
   <link rel="stylesheet" href="assets/css/styles.css">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Restaurant","name":"The Rolling Rooster",
@@ -66,11 +66,11 @@
 
 <main id="main">
 
-<!-- ============ SCENE 01–02 · HERO + DECONSTRUCTED ZINGER (pinned) ============ -->
+<!-- ============ SCENE 01–02 · HERO (pinned product campaign) ============ -->
 <section class="hero" id="top" aria-label="The Rolling Rooster">
   <div class="hero__stage" id="heroStage">
     <div class="hero__bg" aria-hidden="true">
-      <span class="hero__glow"></span>
+      <span class="hero__glow" id="heroGlow"></span>
       <span class="grain"></span>
       <span class="hero__mark" id="heroMark">Rooster</span>
     </div>
@@ -82,16 +82,23 @@
       <span class="hero__front" id="heroFront" aria-hidden="true">Rooster</span>
     </h1>
 
-    <!-- The product. Four real slices of the Zinger Burger photo, stacked. -->
+    <!-- Statement revealed mid-sequence -->
+    <div class="hero__stmt" id="heroStmt" aria-hidden="true">
+      <span class="hero__stmt-w hero__stmt-w--1"><i>Crispy.</i></span>
+      <span class="hero__stmt-w hero__stmt-w--2"><i>Juicy.</i></span>
+      <span class="hero__stmt-w hero__stmt-w--3"><i>Loaded.</i></span>
+    </div>
+
+    <!-- The product. Four real slices of the Tower Burger photo, stacked. -->
     <div class="burger" id="burger" aria-hidden="true">
-      <div class="burger__layer" data-layer="0"><img src="assets/products/zinger-bun-top.webp" alt="" width="930" height="832"></div>
-      <div class="burger__layer" data-layer="1"><img src="assets/products/zinger-greens.webp" alt="" width="930" height="832"></div>
-      <div class="burger__layer" data-layer="2"><img src="assets/products/zinger-fillet.webp" alt="" width="930" height="832"></div>
-      <div class="burger__layer" data-layer="3"><img src="assets/products/zinger-bun-bottom.webp" alt="" width="930" height="832"></div>
-      <div class="burger__tag burger__tag--0"><em>01</em><strong>Toasted bun</strong><span>Soft, sesame-free, warm.</span></div>
-      <div class="burger__tag burger__tag--1"><em>02</em><strong>Fresh crunch</strong><span>Lettuce, tomato, onion, cucumber.</span></div>
-      <div class="burger__tag burger__tag--2"><em>03</em><strong>Zinger fillet</strong><span>Crispy chicken, house sauce.</span></div>
-      <div class="burger__tag burger__tag--3"><em>04</em><strong>Base bun</strong><span>Holds it all together.</span></div>
+      <span class="burger__shadow" id="burgerShadow"></span>
+      <img class="burger__seeds" id="burgerSeeds" src="assets/products/tower-seeds.webp" alt="" width="704" height="697">
+      <div class="burger__float" id="burgerFloat">
+        <div class="burger__layer" data-layer="0"><img src="assets/products/tower-bun-top.webp" alt="" width="1000" height="941"></div>
+        <div class="burger__layer" data-layer="1"><img src="assets/products/tower-patty-1.webp" alt="" width="1000" height="941"></div>
+        <div class="burger__layer" data-layer="2"><img src="assets/products/tower-patty-2.webp" alt="" width="1000" height="941"></div>
+        <div class="burger__layer" data-layer="3"><img src="assets/products/tower-base.webp" alt="" width="1000" height="941"></div>
+      </div>
     </div>
 
     <div class="hero__copy" id="heroCopy">
@@ -105,17 +112,18 @@
 
     <div class="hero__product" id="heroProduct">
       <p class="hero__product-eyebrow">The one to start with</p>
-      <h2>Zinger Burger</h2>
-      <p class="hero__product-price">Rs 350 <span>· with cheese Rs 400</span></p>
-      <a class="btn btn--primary" href="https://wa.me/923005453645?text=Hi%20Rolling%20Rooster%2C%20I%27d%20like%20to%20order%20a%20Zinger%20Burger." target="_blank" rel="noopener" data-magnetic><span>Order this</span><b aria-hidden="true">→</b></a>
+      <h2>Tower Burger<br>With Cheese</h2>
+      <p class="hero__product-price">Rs 500 <span>· Zinger Burger Rs 350</span></p>
+      <a class="btn btn--primary" href="https://wa.me/923005453645?text=Hi%20Rolling%20Rooster%2C%20I%27d%20like%20to%20order%20a%20Tower%20Burger%20With%20Cheese." target="_blank" rel="noopener" data-magnetic><span>Order this</span><b aria-hidden="true">→</b></a>
     </div>
 
-    <div class="hero__hint" id="heroHint" aria-hidden="true"><span></span>Scroll to open it up</div>
+    <div class="hero__hint" id="heroHint" aria-hidden="true"><span></span>Scroll</div>
   </div>
 </section>
 
 <!-- ============ SCENE 03 · MANIFESTO ============ -->
 <section class="manifesto" id="manifesto">
+  <img class="manifesto__burger" id="manifestoBurger" src="assets/products/tower-burger.webp" alt="" width="1000" height="941" loading="eager" aria-hidden="true">
   <div class="kinetic" aria-hidden="true">
     <div class="kinetic__row" data-dir="-1"><span>Crispy</span><i>✦</i><span>Juicy</span><i>✦</i><span>Loaded</span><i>✦</i><span>Crispy</span><i>✦</i><span>Juicy</span><i>✦</i><span>Loaded</span><i>✦</i><span>Crispy</span><i>✦</i><span>Juicy</span><i>✦</i><span>Loaded</span><i>✦</i></div>
     <div class="kinetic__row kinetic__row--outline" data-dir="1"><span>Roll up hungry</span><i>✦</i><span>Roof top dine inn</span><i>✦</i><span>Roll up hungry</span><i>✦</i><span>Roof top dine inn</span><i>✦</i><span>Roll up hungry</span><i>✦</i><span>Roof top dine inn</span><i>✦</i></div>
@@ -138,7 +146,7 @@
       <img class="is-active" data-i="0" src="assets/products/karachi-biryani.webp" alt="" width="442" height="442">
       <img data-i="1" src="assets/products/crispy-chicken.webp" alt="" width="442" height="442">
       <img data-i="2" src="assets/products/pizza-lazania.webp" alt="" width="448" height="448">
-      <img data-i="3" src="assets/products/zinger-classic.webp" alt="" width="425" height="425">
+      <img data-i="3" src="assets/products/tower-burger.webp" alt="" width="1000" height="941">
       <img data-i="4" src="assets/products/special-pasta.webp" alt="" width="425" height="425">
       <span class="sig__ring"></span>
     </div>
@@ -165,11 +173,11 @@
         <span class="sig__price">From Rs 600</span>
       </li>
       <li class="sig__item" data-i="3">
-        <img class="sig__thumb" src="assets/products/zinger-classic.webp" alt="Zinger Burger" width="425" height="425" loading="lazy">
+        <img class="sig__thumb" src="assets/products/tower-burger.webp" alt="Tower Burger With Cheese" width="1000" height="941" loading="lazy">
         <span class="sig__n">04</span>
-        <h3>Zinger Burger</h3>
-        <p>The classic. Crisp fillet, soft bun, no shortcuts. Add cheese for fifty.</p>
-        <span class="sig__price">Rs 350</span>
+        <h3>Tower Burger <br>With Cheese</h3>
+        <p>Two crispy fillets, cheddar on both, lettuce and tomato top and bottom. The full stack.</p>
+        <span class="sig__price">Rs 500</span>
       </li>
       <li class="sig__item" data-i="4">
         <img class="sig__thumb" src="assets/products/special-pasta.webp" alt="Rooster's Special Pasta" width="425" height="425" loading="lazy">
@@ -188,7 +196,7 @@
     <p class="campaign__eyebrow"><i></i>Rooster's Hot Deals · Deal 4</p>
     <div class="campaign__big" aria-hidden="true"><span id="campaignPrice">2,500</span></div>
     <img class="campaign__chicken" id="campChicken" src="assets/products/crispy-chicken.webp" alt="" width="442" height="442" loading="lazy">
-    <img class="campaign__burger" id="campBurger" src="assets/products/zinger-burger.webp" alt="" width="930" height="832" loading="lazy">
+    <img class="campaign__burger" id="campBurger" src="assets/products/tower-burger.webp" alt="" width="1000" height="941" loading="lazy">
     <div class="campaign__copy">
       <h2>Feeds four.<br><em>Rs 2,500.</em></h2>
       <ul>
@@ -224,7 +232,7 @@
     </div>
     <div class="story__product" id="storyProduct">
       <img src="assets/products/crispy-chicken.webp" alt="" width="442" height="442" loading="lazy" data-s="0">
-      <img src="assets/products/zinger-classic.webp" alt="" width="425" height="425" loading="lazy" data-s="1">
+      <img src="assets/products/tower-burger.webp" alt="" width="1000" height="941" loading="lazy" data-s="1">
       <img src="assets/products/pizza-lazania.webp" alt="" width="448" height="448" loading="lazy" data-s="2">
       <img src="assets/brand/rooster-logo.png" alt="" width="665" height="521" loading="lazy" data-s="3">
     </div>
@@ -259,15 +267,15 @@
 <section class="collage" id="collage" aria-label="Food gallery">
   <div class="collage__row" data-speed="1">
     <figure><img src="assets/products/pizza-lazania.webp" alt="Rooster's Special Lazania Pizza" loading="lazy" width="448" height="448"><figcaption>Lazania Pizza</figcaption></figure>
-    <figure class="collage__wide"><img src="assets/products/pizza-banner.webp" alt="Row of chicken pizzas" loading="lazy" width="1512" height="296"><figcaption>Pizza, six ways</figcaption></figure>
+    <figure class="collage__tall"><img src="assets/products/tower-burger.webp" alt="Tower Burger With Cheese" loading="lazy" width="1000" height="941"><figcaption>Tower Burger</figcaption></figure>
     <figure><img src="assets/products/crispy-chicken.webp" alt="Crispy chicken" loading="lazy" width="442" height="442"><figcaption>Crispy Wings</figcaption></figure>
     <figure><img src="assets/products/karachi-biryani.webp" alt="Karachi biryani" loading="lazy" width="442" height="442"><figcaption>Karachi Biryani</figcaption></figure>
   </div>
   <div class="collage__row" data-speed="-1">
-    <figure><img src="assets/products/zinger-classic.webp" alt="Zinger burger" loading="lazy" width="425" height="425"><figcaption>Zinger Burger</figcaption></figure>
     <figure><img src="assets/products/special-pasta.webp" alt="Special pasta" loading="lazy" width="425" height="425"><figcaption>Special Pasta</figcaption></figure>
-    <figure class="collage__tall"><img src="assets/products/zinger-burger.webp" alt="Zinger burger close-up" loading="lazy" width="930" height="832"><figcaption>Zinger, up close</figcaption></figure>
-    <figure><img src="assets/products/drinks.webp" alt="Cold drinks" loading="lazy" width="460" height="190"><figcaption>Cold drinks</figcaption></figure>
+    <figure><img src="assets/products/karachi-biryani.webp" alt="Karachi biryani" loading="lazy" width="442" height="442"><figcaption>Karachi Biryani</figcaption></figure>
+    <figure class="collage__tall"><img src="assets/products/tower-burger.webp" alt="Tower Burger With Cheese, up close" loading="lazy" width="1000" height="941"><figcaption>Cheese, up close</figcaption></figure>
+    <figure><img src="assets/products/pizza-lazania.webp" alt="Rooster's Special Lazania Pizza" loading="lazy" width="448" height="448"><figcaption>Lazania Pizza</figcaption></figure>
   </div>
 </section>
 
